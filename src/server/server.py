@@ -1,20 +1,25 @@
 # Author: Walber C J Rocha
 # University: Universidade Federal do Recôncavo da Bahia
 
-import socket, os, pickle, math
+import os, pickle, socket, threading, time
 
-MAX_CACHE_SIZE = 15.3*(10**6)
+# Global variables
+MB = 20
+MAX_CACHE_SIZE = MB*(10**6)
 
 BUFFER_SIZE = 1024
 
 CACHE_SIZE = 0
 
-def remove_element_cache(self, CACHE_SIZE, size_file):
+CACHE = { }
+# -----------------
+
+def remove_element_cache(size_file):
    size_to_remove = 0
    key_to_remove = ''
    count = 0
-   for key in self:
-      file = self.get(key)
+   for key in CACHE:
+      file = CACHE.get(key)
       current_key = key
       current_size = file['size']
       if(file['size'] >= size_file):
@@ -26,91 +31,97 @@ def remove_element_cache(self, CACHE_SIZE, size_file):
             count = current_size
             size_to_remove = count
             key_to_remove = current_key
-   
-   self.pop(key_to_remove)
+   CACHE.pop(key_to_remove)
    return (CACHE_SIZE - size_to_remove)
 
-def get_cache_files(self):
-   list = [] 
-   for key in self.keys(): 
+def get_cache_files():
+   list = []
+   for key in CACHE.keys(): 
       list.append(key) 
    return list
 
-if __name__ == "__main__":
-   # host = input('Host: ')
-   # port = input('Port: ')
+def ClientConnect(conn, addr, lock):
 
-   host = 'localhost'
-   port = 3333
-   
-   CACHE = { }
-   
-   s = socket.socket()
-   s.bind((host, int(port)))
-   s.listen()
-   
-   while True:
-      conn, addr = s.accept()
-      print('Client connect, wait request')
+   global CACHE
+   global CACHE_SIZE
 
-      request = conn.recv(BUFFER_SIZE).decode()
-      
-      if(request == 'cache'):
-         print('Cache request')
-         conn.send(pickle.dumps(get_cache_files(CACHE)))
+   print('Client connect, wait request')
+   request = conn.recv(BUFFER_SIZE).decode()
+
+   if(request == 'cache'):
+      print('Cache request')
+      conn.send(pickle.dumps(get_cache_files()))
+      conn.close()
+      print('Transfer completed, closed connection')
+   else:
+      if(CACHE.get(str(request))):
+         print('Cache hit, sending, wait')
+         timeInit = time.time()
+         lock.acquire()
+         payload_file = CACHE.get(str(request))
+         data = pickle.loads(payload_file['data'])
+         conn.send(data)
          conn.close()
+         lock.release()
+         timeFinal = time.time()-timeInit
+         print('Tempo: '+str(timeFinal))
          print('Transfer completed, closed connection')
-
       else:
-
-         if(CACHE.get(str(request))):
-            print('Cache hit, sending, wait')
-            payload_file = CACHE.get(str(request))
-            data = payload_file['data']
-            conn.send(data)
-            conn.close()
-            print('Transfer completed, closed connection')
-
-         else:
-            if(os.path.isfile(request)):
-               print('Cache miss, send file, please, wait')
-               payload_file = b''
-               file = open(request, 'rb')
+         if(os.path.isfile(request)):        
+            with open(request, 'rb') as file:
                file_size = os.path.getsize(request)
-               file_load = file.read()
-               
-               while(file_load):
-                  serialize = pickle.dumps(file_load)
-                  payload_file += serialize
-                  conn.send(serialize)
-                  file_load = file.read()
-               
-               file.close()
-               
+               payload_file = file.read()
                if(file_size <= MAX_CACHE_SIZE):
+                  timeInit = time.time()
+                  lock.acquire()
+                  payload_to_cache = b''
+                  while(payload_file):
+                     conn.send(payload_file)
+                     payload_to_cache += payload_file
+                     payload_file = file.read(BUFFER_SIZE)
+                  
+                  payload_serialize = pickle.dumps(payload_to_cache)
                   while(CACHE_SIZE+file_size > MAX_CACHE_SIZE):
-                     CACHE_SIZE = remove_element_cache(CACHE, CACHE_SIZE, file_size)
-                     
-                  to_cache = {str(request): {'size': file_size, 'data': payload_file}}
+                     CACHE_SIZE = remove_element_cache(file_size)
+                  
+                  to_cache = {str(request): {'size': file_size, 'data': payload_serialize}}
                   CACHE_SIZE += file_size
                   CACHE.update(to_cache)
+                  time.sleep(5)
+                  lock.release()
+                  timeFinal = time.time()-timeInit
+                  print('Tempo: '+str(timeFinal))
+               else:
+                  while(payload_file):
+                     conn.send(payload_file)
+                     payload_file = file.read(BUFFER_SIZE)
+            file.close()
+            conn.close()
+            print('Transfer completed, closed connection')
+         else:
+            conn.send(pickle.dumps('The file requested does not exist on the server'))
+            conn.close()
+            print('The file requested does not exist on the server, closed connection')
 
-               print('Transfer completed, closed connection')
-               conn.close()
-            else:
-               conn.send(pickle.dumps('The file does not exist on the server'))
-               conn.close()
-               print('Closed connection')
+if __name__ == "__main__":
+   
+   # HOST = input('Host: ')
+   # PORT = input('Port: ')
+   HOST = 'localhost'
+   PORT = 3333
 
-   # to_cache = {'f1': {'size': 100, 'data': 'payload_file'},
-   # 'f2': {'size': 300, 'data': 'payload_file'},
-   # 'f3': {'size': 130, 'data': 'payload_file'}}
+   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+   s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+   s.bind((HOST, int(PORT)))
 
-   # to_cache2 = {'f4': {'size': 700, 'data': 'payload_file'},
-   # 'f5': {'size': 200, 'data': 'payload_file'},
-   # 'f6': {'size': 4, 'data': 'payload_file'}}
+   while True:
+      s.listen()
+      conn, addr = s.accept()
+      lock = threading.Semaphore()
+      new_client = threading.Thread(target=ClientConnect, args=(conn, addr, lock))
+      new_client.start()
 
-   # CACHE.update(to_cache)
-   # CACHE.update(to_cache2)
-   # teste = get_cache_files(CACHE)
-   # print(teste)
+      for thread in threading.enumerate():
+         print(thread)
+   
+   s.close() 

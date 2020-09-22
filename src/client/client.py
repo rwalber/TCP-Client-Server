@@ -1,7 +1,9 @@
 # Author: Walber C J Rocha
 # University: Universidade Federal do Recôncavo da Bahia
 
-import socket, pickle
+import socket, pickle, os
+
+BUFFER_SIZE = 1024
 
 if __name__ == "__main__":
     # host = input('Host: ')
@@ -10,32 +12,28 @@ if __name__ == "__main__":
     host = 'localhost'
     port = 3333
 
-    s = socket.socket()
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((host, int(port)))
 
     request = input('Request file: ')
     s.send(request.encode())
-    
-    file_receive = b''
-    while True:
-        data = s.recv(4096)
-        if not data:
-            break
-        file_receive += data
-    
-    payload_file = pickle.loads(file_receive)
 
     if(request == 'cache'):
-        print(payload_file)
-        s.close()
-
+        files_in_cache = s.recv(BUFFER_SIZE)
+        print(pickle.loads(files_in_cache))
+        
     else:
-        if(payload_file != 'The file does not exist on the server'):
-            with open(request, 'wb') as file:
-                file.write(payload_file)
-                file.close()
-            print('Transfer Completed')
-            s.close()
-        else:
-            print('The file does not exist on the server')
-            s.close()
+        with open(request, 'wb') as file:
+            while True:
+                data = s.recv(BUFFER_SIZE)
+                if not data:
+                    break
+                # if(pickle.loads(data) == 'The file does not exist on the server'):
+                #     print('The file does not exist on the server')
+                #     os.remove(request)
+                #     break
+                file.write(data)
+        file.close()
+    
+    s.close()
+    print('Transfer Completed')
