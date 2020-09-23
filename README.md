@@ -50,6 +50,7 @@ To order the files, the customer provides the following entry:
 ```sh
 python3 client.py host port file-name directory
 ```
+
 ![Screenshot](assets/file-request.gif)
 
 If the file is not present in the server's directory, the following result is expected:
