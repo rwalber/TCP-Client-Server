@@ -2,19 +2,6 @@
 
 <h3 align="center">Implementation of a TCP client and server, to retrieve files and a TCP server to serve the requested files</h3>
 
-  <p align="center">
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Project Description</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Run Project</a>
-     ·
-  </p>
-</p>
-
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
@@ -25,11 +12,9 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-* [License](#license)
 * [Contact](#contact)
+* [License](#license)
 
-
-<!-- ABOUT THE PROJECT -->
 ## About The Project
 
 ### Overview
@@ -164,3 +149,16 @@ This is an example of how to list things you need to use the software and how to
 	```sh
 		pip3 install os, pickle, socket, sys, threading
 	```
+
+## Contact
+
+Walber Conceição de Jesus Rocha
+Bachelor of Exact and Technological Sciences - UFRB
+Graduating in Computer Engineering - UFRB
+E-mail: walber_jesus@hotmail.com
+
+Project Link: [TCP-Client-Server](https://github.com/rwalber/TCP-Client-Server)
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
