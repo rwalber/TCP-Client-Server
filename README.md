@@ -112,3 +112,55 @@ In the stage of storing the payload of the file, a check is made of the availabl
 
 The strategy used for the relocation process is to check if there are any files in cache memory, which are larger in size than the file being requested, so remove this file and store the new one.
 If none of the files are larger than the requested file, a cycle of removing the files follows until the cache has enough space to allocate the new file.
+
+## Getting Started
+
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
+
+### Prerequisites
+
+This is an example of how to list things you need to use the software and how to install them.
+
+**Install Python3 or higher**
+
+1. ##### Windows
+	[Python Releases](https://www.python.org/downloads/windows/)
+		
+2. ##### Linux Systems
+	```sh
+		sudo apt-get install python3.6
+	```
+
+### Installation
+
+1. ##### Windows
+	* To manage packages in Python3
+		Download  [get-pip.py](https://bootstrap.pypa.io/get-pip.py)  to a folder on your computer.
+		Open a command prompt and navigate to the folder containing the get-pip.py installer.
+		Run the following command:
+
+	```sh
+		python get-pip.py
+	```
+* Packages needed
+	```sh
+		pip3 install os, pickle, socket, sys, threading
+	```
+2. ##### Linux Systems
+
+	* Update your system
+	```sh
+		sudo apt update
+		sudo apt -y upgrade
+	```
+
+	* To manage packages in Python3
+	```sh
+		sudo apt install -y python3-pip
+	```
+
+	* Packages needed
+	```sh
+		pip3 install os, pickle, socket, sys, threading
+	```
