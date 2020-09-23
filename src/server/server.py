@@ -1,10 +1,10 @@
 # Author: Walber C J Rocha
 # University: Universidade Federal do Recôncavo da Bahia
 
-import os, pickle, socket, threading, time
+import os, pickle, socket, sys, threading
 
 # Global variables
-MB = 20
+MB = 64
 MAX_CACHE_SIZE = MB*(10**6)
 
 BUFFER_SIZE = 1024
@@ -40,39 +40,37 @@ def get_cache_files():
       list.append(key) 
    return list
 
-def ClientConnect(conn, addr, lock):
-
+def client_connect(directory, conn, addr, lock):
    global CACHE
    global CACHE_SIZE
+   
+   os.chdir(directory)
 
-   print('Client connect, wait request')
    request = conn.recv(BUFFER_SIZE).decode()
+   
+   print(f'Client {addr} is requesting file {request}')
 
-   if(request == 'cache'):
-      print('Cache request')
+   if(request == 'list-cache'):
       conn.send(pickle.dumps(get_cache_files()))
       conn.close()
-      print('Transfer completed, closed connection')
+      print('Cache request sent to the client')
+   
    else:
       if(CACHE.get(str(request))):
-         print('Cache hit, sending, wait')
-         timeInit = time.time()
-         lock.acquire()
+         print(f'Cache hit. File {request} sent to the client.')
          payload_file = CACHE.get(str(request))
          data = pickle.loads(payload_file['data'])
          conn.send(data)
          conn.close()
          lock.release()
-         timeFinal = time.time()-timeInit
-         print('Tempo: '+str(timeFinal))
-         print('Transfer completed, closed connection')
+
       else:
          if(os.path.isfile(request)):        
             with open(request, 'rb') as file:
                file_size = os.path.getsize(request)
                payload_file = file.read()
                if(file_size <= MAX_CACHE_SIZE):
-                  timeInit = time.time()
+                  
                   lock.acquire()
                   payload_to_cache = b''
                   while(payload_file):
@@ -87,28 +85,27 @@ def ClientConnect(conn, addr, lock):
                   to_cache = {str(request): {'size': file_size, 'data': payload_serialize}}
                   CACHE_SIZE += file_size
                   CACHE.update(to_cache)
-                  time.sleep(5)
+                  
                   lock.release()
-                  timeFinal = time.time()-timeInit
-                  print('Tempo: '+str(timeFinal))
+                  
                else:
                   while(payload_file):
                      conn.send(payload_file)
                      payload_file = file.read(BUFFER_SIZE)
             file.close()
             conn.close()
-            print('Transfer completed, closed connection')
+            print(f'Cache miss. File {request} sent to the client')
+         
          else:
-            conn.send(pickle.dumps('The file requested does not exist on the server'))
+            conn.send(b'File does not exist')
             conn.close()
-            print('The file requested does not exist on the server, closed connection')
+            print(f'File {request} does not exist')
 
 if __name__ == "__main__":
-   
-   # HOST = input('Host: ')
-   # PORT = input('Port: ')
-   HOST = 'localhost'
-   PORT = 3333
+
+   HOST = sys.argv[1]
+   PORT = sys.argv[2]
+   DIRECTORY = sys.argv[3]
 
    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -118,10 +115,7 @@ if __name__ == "__main__":
       s.listen()
       conn, addr = s.accept()
       lock = threading.Semaphore()
-      new_client = threading.Thread(target=ClientConnect, args=(conn, addr, lock))
+      new_client = threading.Thread(target=client_connect, args=(DIRECTORY, conn, addr, lock))
       new_client.start()
-
-      for thread in threading.enumerate():
-         print(thread)
    
-   s.close() 
+   s.close()
