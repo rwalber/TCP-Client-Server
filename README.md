@@ -143,10 +143,10 @@ This is an example of how to list things you need to use the software and how to
 	```sh
 		python get-pip.py
 	```
-* Packages needed
-	```sh
-		pip3 install os, pickle, socket, sys, threading
-	```
+	* Packages needed
+		```sh
+			pip3 install os, pickle, socket, sys, threading
+		```
 2. ##### Linux Systems
 
 	* Update your system
