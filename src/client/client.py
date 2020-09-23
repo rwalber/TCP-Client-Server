@@ -3,7 +3,7 @@
 
 import os, pickle, socket, sys
 
-BUFFER_SIZE = 1024
+BUFFER_SIZE = 4096
 
 def client_request(directory, s, request):
     os.chdir(directory)
@@ -14,19 +14,21 @@ def client_request(directory, s, request):
         print(pickle.loads(files_in_cache))
         
     else:
-        while True:
-            data = s.recv(BUFFER_SIZE)
-            if(data == b'File does not exist'):
-                print(f'File {request} does not exist in the server')
-                break
-            else:
-                with open(request, 'wb') as file:
-                    if not data:
-                        break
-                    file.write(data)
-                file.close()
-                print(f'File {request} saved')
-                break
+        with open(request, 'wb') as file:
+            have = True
+            while True:
+                data = s.recv(BUFFER_SIZE)
+                if(data == b'File does not exist'):
+                    print('File does not exist')
+                    os.remove(request)
+                    have = False
+                    break
+                if not data:
+                    break
+                file.write(data)
+        file.close()
+        if(have):
+            print(f'File {request} saved')
     s.close()
 
 if __name__ == "__main__":
