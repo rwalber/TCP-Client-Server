@@ -1,6 +1,6 @@
 <br />
 
-<h2 align="center">Implementation of a TCP client and server, to retrieve files and a TCP server to serve the requested files</h2>
+<h2 align="center">Implementation of a TCP client-server. Where the client requests files from a TCP server, which serves the requested files.</h2>
 
 <br />
 <br />
