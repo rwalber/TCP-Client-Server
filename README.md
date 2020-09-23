@@ -2,9 +2,6 @@
 
 <h3 align="center">Implementation of a TCP client and server, to retrieve files and a TCP server to serve the requested files</h3>
 
-<!-- TABLE OF CONTENTS -->
-## Table of Contents
-
 * [About the Project](#about-the-project)
   * [Overview](#overview)
   * [Client](#client)
@@ -14,6 +11,10 @@
   * [Installation](#installation)
 * [Contact](#contact)
 * [License](#license)
+
+<br />
+<br />
+<br />
 
 ## About The Project
 
@@ -152,9 +153,9 @@ This is an example of how to list things you need to use the software and how to
 
 ## Contact
 
-Walber Conceição de Jesus Rocha
-Bachelor of Exact and Technological Sciences - UFRB
-Graduating in Computer Engineering - UFRB
+Walber Conceição de Jesus Rocha <br />
+Bachelor of Exact and Technological Sciences - UFRB <br />
+Graduating in Computer Engineering - UFRB <br />
 E-mail: walber_jesus@hotmail.com
 
 Project Link: [TCP-Client-Server](https://github.com/rwalber/TCP-Client-Server)
