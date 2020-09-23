@@ -18,30 +18,29 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-* [About the Project](#about-the-project)
-  * [Built With](#built-with)
+* [About the Project](##About-the-project)
+  * [Overview](###Overview)
+  * [Client](####Client)
+  * [Server](####Server)
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-* [Usage](#usage)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
 * [License](#license)
 * [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
-
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
 ### Overview
-
+<p align="justify">
 This project consists of the implementation of a TCP client-server. In it we find the TCP client, which can request the files located in the directory of the TCP server, which serves the requested files.
 
 The client, after establishing a connection with the server, sends the requested file name. The server, upon receiving the request, looks for the file in its cache memory or in its predefined directory. If the file is found in either location, the server then transmits the file's content to the client over the same connection.
 
-####  · Client
+</p>
+
+#### Client
 
 The client presents the implementation of a TCP-client. Client requests take 4 parameters - the server name, the server port, the file to be requested and the directory location where you want to save the file. Can make the following requests to the server:
 
@@ -51,7 +50,6 @@ To order the files, the customer provides the following entry:
 ```sh
 python3 client.py host port file-name directory
 ```
-
 ![Screenshot](assets/file-request.gif)
 
 If the file is not present in the server's directory, the following result is expected:
@@ -66,7 +64,7 @@ python3 client.py host port list-cache directory
 ```
 ![Screenshot](assets/list-cache.gif)
 
-####  · Server
+#### Server
 
 The server consists of a server-TCP Multi-Thread implementation, in which, for each connected client, a Thread is created, executing the flow of its requests in parallel, with concurrent control over the read / write in the cache memory.
 
@@ -100,7 +98,9 @@ if The file exists on the server {
 	  The server sends the file to the client, followed by the connection termination
   } 
   else {
-	The server opens the file, followed by sending, according to the size specified for the buffer. At the end of the sending, the server serializes the payload of the file and stores it in the cache memory, in order to provide the file more quickly in the next requests.
+	The server opens the file, followed by sending, according to the size specified for the buffer. 
+	At the end of the sending, the server serializes the payload of the file and stores it in the cache 
+	memory, in order to provide the file more quickly in the next requests.
   }
 } 
 else {
