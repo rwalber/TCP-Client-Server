@@ -1,6 +1,9 @@
 <br />
 
-<h3 align="center">Implementation of a TCP client and server, to retrieve files and a TCP server to serve the requested files</h3>
+<h2 align="center">Implementation of a TCP client and server, to retrieve files and a TCP server to serve the requested files</h2>
+
+<br />
+<br />
 
 * [About the Project](#about-the-project)
   * [Overview](#overview)
@@ -12,8 +15,6 @@
 * [Contact](#contact)
 * [License](#license)
 
-<br />
-<br />
 <br />
 
 ## About The Project
