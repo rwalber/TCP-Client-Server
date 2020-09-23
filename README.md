@@ -45,23 +45,26 @@ The client, after establishing a connection with the server, sends the requested
 
 The client presents the implementation of a TCP-client. Client requests take 4 parameters - the server name, the server port, the file to be requested and the directory location where you want to save the file. Can make the following requests to the server:
 
-1. Files allocated in cache memory
-
-To request the list of files in the cache memory, the client provides the following entry:
-```sh
-python3 client.py host port list-cache directory
-```
-
-
-2. File present in the server directory
+1. File present in the server directory
 
 To order the files, the customer provides the following entry:
 ```sh
 python3 client.py host port file-name directory
 ```
 
+![Screenshot](assets/file-request.gif)
+
 If the file is not present in the server's directory, the following result is expected:
 
+![Screenshot](assets/file-not.gif)
+
+2. Files allocated in cache memory
+
+To request the list of files in the cache memory, the client provides the following entry:
+```sh
+python3 client.py host port list-cache directory
+```
+![Screenshot](assets/list-cache.gif)
 
 ####  · Server
 
