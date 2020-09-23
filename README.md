@@ -18,10 +18,10 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-* [About the Project](##About-the-project)
-  * [Overview](###Overview)
-  * [Client](####Client)
-  * [Server](####Server)
+* [About the Project](#about-the-project)
+  * [Overview](#overview)
+  * [Client](#client)
+  * [Server](#server)
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
