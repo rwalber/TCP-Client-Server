@@ -38,19 +38,26 @@ To order the files, the customer provides the following entry:
 python3 client.py host port file-name directory
 ```
 
-![Screenshot](assets/file-request.gif)
+<p align="center">
+  <img src="assets/file-request.gif" />
+</p>
 
 If the file is not present in the server's directory, the following result is expected:
 
-![Screenshot](assets/file-not.gif)
+<p align="center">
+  <img src="assets/file-not.gif" />
+</p>
 
 2. Files allocated in cache memory
 
 To request the list of files in the cache memory, the client provides the following entry:
 ```sh
-python3 client.py host port list-cache
+python3 client.py host port list
 ```
-![Screenshot](assets/list-cache.gif)
+
+<p align="center">
+  <img src="assets/list.gif" />
+</p>
 
 #### Server
 
@@ -99,6 +106,10 @@ In the stage of storing the payload of the file, a check is made of the availabl
 
 The strategy used for the relocation process is to check if there are any files in cache memory, which are larger in size than the file being requested, so remove this file and store the new one.
 If none of the files are larger than the requested file, a cycle of removing the files follows until the cache has enough space to allocate the new file.
+
+<p align="center">
+  <img src="assets/server-actions.gif" />
+</p>
 
 ## Getting Started
 
