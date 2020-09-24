@@ -48,7 +48,7 @@ If the file is not present in the server's directory, the following result is ex
 
 To request the list of files in the cache memory, the client provides the following entry:
 ```sh
-python3 client.py host port list-cache directory
+python3 client.py host port list-cache
 ```
 ![Screenshot](assets/list-cache.gif)
 
