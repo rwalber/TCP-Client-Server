@@ -103,9 +103,9 @@ def client_connect(directory, conn, addr, lock):
 
 if __name__ == "__main__":
 
-   HOST = sys.argv[1]
-   PORT = sys.argv[2]
-   DIRECTORY = sys.argv[3]
+   HOST = 'localhost'
+   PORT = sys.argv[1]
+   DIRECTORY = sys.argv[2]
 
    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
