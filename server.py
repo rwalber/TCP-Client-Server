@@ -7,7 +7,7 @@ import os, pickle, socket, sys, threading
 MB = 64
 MAX_CACHE_SIZE = MB*(10**6)
 
-BUFFER_SIZE = 4096
+BUFFER_SIZE = 1024
 
 CACHE_SIZE = 0
 
@@ -58,6 +58,7 @@ def client_connect(directory, conn, addr, lock):
    else:
       if(CACHE.get(str(request))):
          print(f'Cache hit. File {request} sent to the client.')
+         lock.acquire()
          payload_file = CACHE.get(str(request))
          data = pickle.loads(payload_file['data'])
          conn.send(data)
@@ -70,7 +71,6 @@ def client_connect(directory, conn, addr, lock):
                file_size = os.path.getsize(request)
                payload_file = file.read()
                if(file_size <= MAX_CACHE_SIZE):
-                  
                   lock.acquire()
                   payload_to_cache = b''
                   while(payload_file):
