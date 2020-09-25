@@ -7,7 +7,7 @@ import os, pickle, socket, sys, threading
 MB = 64
 MAX_CACHE_SIZE = MB*(10**6)
 
-BUFFER_SIZE = 1024
+BUFFER_SIZE = 4096
 
 CACHE_SIZE = 0
 
