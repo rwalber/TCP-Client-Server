@@ -131,9 +131,9 @@ To get a local copy up and running follow these simple example steps.
 		python get-pip.py
 	```
 	* Packages needed
-		```sh
-			pip3 install os, pickle, socket, sys, threading
-		```
+	```sh
+		pip3 install os, pickle, socket, sys, threading
+	```
 2. ##### Linux Systems
 	**Install Python3 or higher**
 	```sh
