@@ -11,7 +11,7 @@
   * [Server](#server)
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
+  * [Execution](#execution)
 * [Contact](#contact)
 * [License](#license)
 
@@ -118,21 +118,10 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-
-**Install Python3 or higher**
-
 1. ##### Windows
+	**Install Python3 or higher**
 	[Python Releases](https://www.python.org/downloads/windows/)
-		
-2. ##### Linux Systems
-	```sh
-		sudo apt-get install python3.6
-	```
-
-### Installation
-
-1. ##### Windows
+	
 	* To manage packages in Python3
 		Download  [get-pip.py](https://bootstrap.pypa.io/get-pip.py)  to a folder on your computer.
 		Open a command prompt and navigate to the folder containing the get-pip.py installer.
@@ -146,6 +135,10 @@ This is an example of how to list things you need to use the software and how to
 			pip3 install os, pickle, socket, sys, threading
 		```
 2. ##### Linux Systems
+	**Install Python3 or higher**
+	```sh
+		sudo apt-get install python3.6
+	```
 
 	* Update your system
 	```sh
@@ -162,6 +155,21 @@ This is an example of how to list things you need to use the software and how to
 	```sh
 		pip3 install os, pickle, socket, sys, threading
 	```
+
+### Execution
+
+* Server
+	```sh
+		python3 server.py port_to_listen directory
+	```
+
+* Client
+	```sh
+		python3 client.py host_server server_port_listen file_name directory #for file request
+		   or
+		python3 client.py host_server server_port_listen list #for information on files in cache memory
+	```
+	
 
 ## Contact
 
