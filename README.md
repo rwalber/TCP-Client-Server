@@ -128,46 +128,46 @@ To get a local copy up and running follow these simple example steps.
 		Run the following command:
 
 	```sh
-		python get-pip.py
+	python get-pip.py
 	```
 	* Packages needed
 	```sh
-		pip3 install os, pickle, socket, sys, threading
+	pip3 install os, pickle, socket, sys, threading
 	```
 2. ##### Linux Systems
 	**Install Python3 or higher**
 	```sh
-		sudo apt-get install python3.6
+	sudo apt-get install python3.6
 	```
 
 	* Update your system
 	```sh
-		sudo apt update
-		sudo apt -y upgrade
+	sudo apt update
+	sudo apt -y upgrade
 	```
 
 	* To manage packages in Python3
 	```sh
-		sudo apt install -y python3-pip
+	sudo apt install -y python3-pip
 	```
 
 	* Packages needed
 	```sh
-		pip3 install os, pickle, socket, sys, threading
+	pip3 install os, pickle, socket, sys, threading
 	```
 
 ### Execution
 
 * Server
 	```sh
-		python3 server.py port_to_listen directory
+	python3 server.py port_to_listen directory
 	```
 
 * Client
 	```sh
-		python3 client.py host_server server_port_listen file_name directory #for file request
-		   or
-		python3 client.py host_server server_port_listen list #for information on files in cache memory
+	python3 client.py host_server server_port_listen file_name directory #for file request
+	
+	python3 client.py host_server server_port_listen list #for information on files in cache memory
 	```
 	
 
