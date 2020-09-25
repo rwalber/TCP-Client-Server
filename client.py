@@ -3,7 +3,7 @@
 
 import os, pickle, socket, sys
 
-BUFFER_SIZE = 4096
+BUFFER_SIZE = 1024
 
 def list_cache_request(s, request):
     s.send(request.encode())
