@@ -5,7 +5,7 @@ import os, pickle, socket, sys, threading
 
 # Global variables
 MB = 64
-MAX_CACHE_SIZE = MB*(10**6)
+MAX_CACHE_SIZE = MB*(1024*1024)
 
 BUFFER_SIZE = 1024
 
