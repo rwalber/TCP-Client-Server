@@ -56,22 +56,21 @@ def client_connect(directory, conn, addr, lock):
       print('Cache request sent to the client')
    
    else:
+      lock.acquire()
       if(CACHE.get(str(request))):
          print(f'Cache hit. File {request} sent to the client.')
-         lock.acquire()
          payload_file = CACHE.get(str(request))
          data = pickle.loads(payload_file['data'])
          conn.send(data)
          conn.close()
-         lock.release()
-
+   
       else:
          if(os.path.isfile(request)):        
             with open(request, 'rb') as file:
                file_size = os.path.getsize(request)
                payload_file = file.read()
                if(file_size <= MAX_CACHE_SIZE):
-                  lock.acquire()
+
                   payload_to_cache = b''
                   while(payload_file):
                      conn.send(payload_file)
@@ -86,8 +85,6 @@ def client_connect(directory, conn, addr, lock):
                   CACHE_SIZE += file_size
                   CACHE.update(to_cache)
                   
-                  lock.release()
-                  
                else:
                   while(payload_file):
                      conn.send(payload_file)
@@ -100,6 +97,8 @@ def client_connect(directory, conn, addr, lock):
             conn.send(b'File does not exist')
             conn.close()
             print(f'File {request} does not exist')
+   
+   lock.release()
 
 if __name__ == "__main__":
 
